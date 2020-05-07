@@ -1,5 +1,0 @@
-tenant domain: dev-4ugefhqm.auth0.com
-
-for auth0
-
-    brew install mkcert
