@@ -1,9 +1,10 @@
 /* eslint-disable camelcase */
 /* eslint-disable consistent-return */
 /* eslint-disable no-console */
-import bcrypt from 'bcrypt';
-import Sequelize from 'sequelize';
-import jwtSecret from './jwtConfig';
+const bcrypt = require('bcrypt');
+const Sequelize = require('sequelize');
+const jwtSecret = require('./jwtConfig');
+const { v4: uuidv4 } = require('uuid');
 
 const BCRYPT_SALT_ROUNDS = 12;
 // eslint-disable-next-line prefer-destructuring
@@ -32,12 +33,12 @@ passport.use(
         User.findOne({
           where: {
             [Op.or]: [
-              {
-                username,
-              },
-              { email: req.body.email },
-            ],
+              {username: req.body.username},
+            ]
           },
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'] 
+          }
         }).then(user => {
           if (user != null) {
             console.log('username or email already taken');
@@ -47,9 +48,15 @@ passport.use(
           }
           bcrypt.hash(password, BCRYPT_SALT_ROUNDS).then(hashedPassword => {
             User.create({
-              username,
+              id: uuidv4(),
+              first_name: req.body.first_name,
+              last_name: req.body.last_name,
+              username: req.body.username,
               password: hashedPassword,
               email: req.body.email,
+              account_balance: 0,
+              createdAt: Date.now(),
+              updatedAt: Date.now(),
             }).then(user => {
               console.log('user created');
               return done(null, user);

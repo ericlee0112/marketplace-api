@@ -5,15 +5,15 @@ const passport = require('passport');
 const flash = require('express-flash');
 const session = require('express-session');
 const methodOverride = require('method-override');
+const cors = require('cors');
 
-const initializePassport = require('./passport-config');
 const { getListings, initialize, registerUser } = require('./queries');
 dotenv.config();
-
+/*
 initialize(
   passport,
 );
-
+*/
 const app = express();
 
 app.set('view-engine', 'ejs')
@@ -29,12 +29,17 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use(methodOverride('_method'))
 
+require('./config/passport');
 
-
+app.use(cors());
 
 app.listen(process.env.PORT, () => {
   console.log("server started at port: " + process.env.PORT);
 });
+
+require('./routes/loginUser')(app);
+require('./routes/registerUser')(app);
+
 
 app.get('/', checkAuthenticated, (req, res) => {
   res.render('listings.ejs', { name: req.user.first_name } )
