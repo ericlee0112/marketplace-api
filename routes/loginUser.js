@@ -1,4 +1,3 @@
-
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const jwtSecret = require('../config/jwtConfig');
@@ -24,6 +23,7 @@ module.exports = app => {
               username: req.body.username,
             },
           }).then(user => {
+            console.log('user has been found');
             const token = jwt.sign({ id: user.id }, jwtSecret.secret, {
               expiresIn: 60 * 60,
             });
