@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const UserModel = require('./models/user');
+const ListingModel = reqiuire('./models/listing');
 
 const sequelize = new Sequelize('marketplacev2', 'ericlee', '', {
   host: 'localhost',
@@ -7,10 +8,14 @@ const sequelize = new Sequelize('marketplacev2', 'ericlee', '', {
 });
 
 const User = UserModel(sequelize, Sequelize);
+const Listing = ListingModel(sequelize, Sequelize);
 
 sequelize.sync().then(() => {
   // eslint-disable-next-line no-console
   console.log('Users db and user table have been created');
 });
 
-module.exports = User;
+module.exports = {
+  User,
+  Listing,
+};
