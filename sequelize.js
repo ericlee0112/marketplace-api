@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 const UserModel = require('./models/user');
-const ListingModel = reqiuire('./models/listing');
+const ListingModel = require('./models/listing');
 
 const sequelize = new Sequelize('marketplacev2', 'ericlee', '', {
   host: 'localhost',
@@ -16,6 +16,6 @@ sequelize.sync().then(() => {
 });
 
 module.exports = {
-  User,
-  Listing,
+  User: User,
+  Listing: Listing,
 };
